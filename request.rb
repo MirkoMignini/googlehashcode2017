@@ -16,13 +16,12 @@ class Request
     size * saving
   end
 
-  def self.sort_by_size(requests)
-    # endpoints.sort_by { |v| [v.endpoint.latency, v.size] }.reverse
-    # endpoints.sort_by { |v| [-v.video.size, v.size] }.reverse
-    requests.select { |v| v.processed == false }.sort_by { |v|
-      #v.size * (v.endpoint.latency - v.endpoint.get_saving(v.video, force))
-      #v.size * v.endpoint.latency
-      -v.best_score
-    }#.reverse
+  def get_latency_saving
+    #return 0 unless cached
+    endpoint.latency - endpoint.get_best_video_latency(video)
+  end
+
+  def self.sort_by_something(requests)
+    requests.select { |v| v.processed == false }.sort_by { |v| -v.best_score }
   end
 end
